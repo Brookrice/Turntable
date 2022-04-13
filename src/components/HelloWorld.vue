@@ -1,58 +1,110 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <div class="big-circle">
+      <LuckyWheel
+        ref="myLucky"
+        width="300px"
+        height="300px"
+        :prizes="prizes"
+        :blocks="blocks"
+        :buttons="buttons"
+        @start="startCallback"
+        @end="endCallback"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
-    msg: String
-  }
-}
+    msg: String,
+  },
+  data() {
+    return {
+      blocks: [
+        {
+          padding: "13px",
+          // background: "#617df2",
+          imgs: [
+            {
+              src: "https://cdn.jsdelivr.net/gh/buuing/cdn/demo/wheel-border.jpg",
+              width: "100%",
+              height: "100%",
+            },
+          ],
+        },
+        {
+          padding: "10px",
+          imgs: [
+            {
+              src: "https://cdn.jsdelivr.net/gh/buuing/cdn/demo/wheel-border.png",
+              width: "100%",
+              height: "100%",
+            },
+          ],
+        },
+        {
+          padding: "20px",
+          imgs: [
+            {
+              src: "https://cdn.jsdelivr.net/gh/buuing/cdn/demo/block-img.png",
+              width: "100%",
+              rotate: true,
+            },
+          ],
+        },
+      ],
+      prizes: [
+        { fonts: [{ text: "", top: "10%" }],},
+        { fonts: [{ text: "", top: "10%" }],},
+        { fonts: [{ text: "", top: "10%" }],},
+        { fonts: [{ text: "", top: "10%" }],},
+        { fonts: [{ text: "", top: "10%" }], },
+        { fonts: [{ text: "", top: "10%" }], },
+      ],
+      buttons: [
+        { radius: "50px", background: "#617df2" },
+        { radius: "45px", background: "#afc8ff" },
+        {
+          radius: "40px",
+          background: "#869cfa",
+          // pointer: true,
+          fonts: [{ text: "开始\n抽奖", top: "-20px" }],
+        },
+      ],
+    };
+  },
+  methods: {
+    // 点击抽奖按钮会触发star回调
+    startCallback() {
+      // 调用抽奖组件的play方法开始游戏
+      this.$refs.myLucky.play();
+      // 模拟调用接口异步抽奖
+      setTimeout(() => {
+        // 假设后端返回的中奖索引是0
+        const index = 0;
+        // 调用stop停止旋转并传递中奖索引
+        this.$refs.myLucky.stop(index);
+      }, 3000);
+    },
+    // 抽奖结束会触发end回调
+    endCallback(prize) {
+      console.log(prize);
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.big-circle {
+  position: absolute;
+  top: 200px;
+  left: 200px;
+  width: 300px;
+  height: 300px;
 }
 </style>
